@@ -1,9 +1,9 @@
 import { Router } from "express";
 
+import { createTask } from "./controllers/TaskController";
+
 const route = Router();
 
-route.get("/", (req, res) => {
-  res.send({ message: "Running" });
-});
+route.post("/create", createTask);
 
 export default route;

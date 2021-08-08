@@ -15,7 +15,7 @@ export class Task {
   title: string;
 
   @Column()
-  description: number;
+  description: string;
 
   @Column({ default: false })
   completed: boolean;
