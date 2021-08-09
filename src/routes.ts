@@ -1,4 +1,6 @@
 import { Router } from "express";
+import * as multer from "multer";
+import { multerConfig } from "./config/multer";
 
 import {
   createTask,
@@ -20,7 +22,8 @@ route.get("/task/:id", getTask);
 route.post("/create/user", createUser);
 route.post("/create/task", createTask);
 
-route.put("/update/user", updateUser);
+route.put("/update/user", multer(multerConfig).single("avatar"), updateUser);
+
 route.put("/update/task/:id", updateTask);
 route.patch("/completed/:id", completedTask);
 
