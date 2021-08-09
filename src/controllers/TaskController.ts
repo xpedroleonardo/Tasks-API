@@ -2,6 +2,7 @@ import { getRepository } from "typeorm";
 import { Request, Response } from "express";
 
 import { Task } from "../entities/Task";
+import { User } from "../entities/User";
 
 export const createTask = async (req: Request, res: Response) => {
   const task = await getRepository(Task).save(req.body);
@@ -9,10 +10,11 @@ export const createTask = async (req: Request, res: Response) => {
 };
 
 export const getTasks = async (req: Request, res: Response) => {
-  const task = await getRepository(Task).find({
+  const user = await getRepository(User).findOne();
+  const tasks = await getRepository(Task).find({
     order: { completed: "ASC" },
   });
-  return res.json(task);
+  return res.json({ user, tasks });
 };
 
 export const getTask = async (req: Request, res: Response) => {
