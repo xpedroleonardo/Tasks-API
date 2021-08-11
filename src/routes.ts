@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as multer from "multer";
+import * as path from "path";
 import { multerConfig } from "./config/multer";
 
 import {
@@ -18,6 +19,11 @@ const route = Router();
 route.get("/", getTasks);
 route.get("/user", getUser);
 route.get("/task/:id", getTask);
+route.get("/image/:filename", (req, res) => {
+  const { filename } = req.params;
+
+  res.sendFile(path.resolve(__dirname, "..", "tmp", "upload", filename));
+});
 
 route.post("/create/user", createUser);
 route.post("/create/task", createTask);

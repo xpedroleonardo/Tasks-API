@@ -14,7 +14,7 @@ export const multerConfig = {
           cb(err, "");
         }
 
-        const filename = `${hash.toString("hex")}_${file.originalname}`;
+        const filename = `${hash.toString("hex")}-${file.originalname}`;
         cb(null, filename);
       });
     },

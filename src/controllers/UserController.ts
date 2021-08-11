@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { unlink } from "fs";
+import * as path from "path";
 
 import { User } from "../entities/User";
 
@@ -25,24 +26,27 @@ export const getUser = async (req: Request, res: Response) => {
 };
 
 export const updateUser = async (req: Request, res: Response) => {
-  const { avatar } = await getRepository(User).findOne();
-  const { name } = req.body;
-  const { path } = req.file;
+  const user = await getRepository(User).findOne();
+  const { name, avatar } = req.body;
+  const file = req.file;
 
   if (name.length === 1) {
     return res.send({ message: "error data not found" });
   }
 
+  if (file?.filename) {
+    unlink(
+      path.resolve(__dirname, "..", "..", "tmp", "upload", user.avatar),
+      (err) => {
+        return res.json({ message: err });
+      }
+    );
+  }
+
   const userUpdated = await getRepository(User).update(1, {
     name,
-    avatar: path,
+    avatar: file?.filename ? file?.filename : user.avatar,
   });
-
-  if (avatar) {
-    unlink(avatar, () => {
-      console.log("File deleted");
-    });
-  }
 
   if (userUpdated.affected === 1) {
     const updated = await getRepository(User).findOne();

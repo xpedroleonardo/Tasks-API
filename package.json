@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "server": "ts-node src/index.ts",
     "dev": "ts-node-dev src/index.ts"
   },
   "devDependencies": {
@@ -19,6 +20,7 @@
     "multer": "^1.4.3",
     "mysql": "^2.18.1",
     "reflect-metadata": "^0.1.13",
+    "ts-node": "^10.2.0",
     "typeorm": "^0.2.36"
   }
 }
