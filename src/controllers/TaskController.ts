@@ -5,7 +5,15 @@ import { Task } from "../entities/Task";
 import { User } from "../entities/User";
 
 export const createTask = async (req: Request, res: Response) => {
-  const task = await getRepository(Task).save(req.body);
+  const { title, description } = req.body;
+
+  if (title === "") {
+    return res.json({
+      error: "Não altere o nosso formulário",
+    });
+  }
+
+  const task = await getRepository(Task).save({ title, description });
   return res.json(task);
 };
 

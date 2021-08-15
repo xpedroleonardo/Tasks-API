@@ -1,6 +1,6 @@
 import { Router } from "express";
-import * as multer from "multer";
-import * as path from "path";
+import multer from "multer";
+import path from "path";
 import { multerConfig } from "./config/multer";
 
 import {

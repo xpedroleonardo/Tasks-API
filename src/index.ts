@@ -1,8 +1,8 @@
 import "reflect-metadata";
-import * as express from "express";
-import route from "./routes";
-import * as cors from "cors";
+import cors from "cors";
+import express from "express";
 
+import route from "./routes";
 import "./database";
 
 const app = express();

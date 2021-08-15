@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { unlink } from "fs";
-import * as path from "path";
+import path from "path";
 
 import { User } from "../entities/User";
 
