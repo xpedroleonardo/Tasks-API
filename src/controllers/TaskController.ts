@@ -7,10 +7,13 @@ import { User } from "../entities/User";
 export const createTask = async (req: Request, res: Response) => {
   const { title, description } = req.body;
 
-  if (title === "") {
-    return res.json({
-      error: "Não altere o nosso formulário",
-    });
+  if (
+    title === "" ||
+    title.length > 30 ||
+    description === "" ||
+    description.length > 255
+  ) {
+    return res.send({ error: "Não altere o formulário" });
   }
 
   const task = await getRepository(Task).save({ title, description });
@@ -40,12 +43,13 @@ export const updateTask = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { title, description } = req.body;
 
-  if (!title || !description) {
-    return res.send({ message: "error data not found" });
-  }
-
-  if (title.length === 0 || description.length === 0) {
-    return res.send({ message: "error data not found" });
+  if (
+    title === "" ||
+    title.length > 30 ||
+    description === "" ||
+    description.length > 255
+  ) {
+    return res.send({ error: "Não altere o formulário" });
   }
 
   const task = await getRepository(Task).update(id, { title, description });

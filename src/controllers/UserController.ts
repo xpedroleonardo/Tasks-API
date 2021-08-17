@@ -5,19 +5,17 @@ import path from "path";
 
 import { User } from "../entities/User";
 
-export const createUser = async (req: Request, res: Response) => {
+export const createUser = async () => {
   const userExist = await getRepository(User).findOne();
 
   if (userExist) {
-    return res.send({ message: "The user alrealy exist!" });
+    return;
   }
 
-  const user = await getRepository(User).save({
+  getRepository(User).save({
     name: "Pedro Leonardo",
-    avatar: "profile.png",
+    avatar: "http://localhost:3333/image/avatar.svg",
   });
-
-  return res.send(user);
 };
 
 export const getUser = async (req: Request, res: Response) => {
@@ -27,25 +25,31 @@ export const getUser = async (req: Request, res: Response) => {
 
 export const updateUser = async (req: Request, res: Response) => {
   const user = await getRepository(User).findOne();
-  const { name, avatar } = req.body;
+  const { name } = req.body;
   const file = req.file;
 
-  if (name.length === 1) {
-    return res.send({ message: "error data not found" });
+  if (name === "" || name.length > 25) {
+    return res.send({ error: "Não altere o formulário" });
   }
 
+  const AvatarName = user.avatar.split("image/");
+
   if (file?.filename) {
-    unlink(
-      path.resolve(__dirname, "..", "..", "tmp", "upload", user.avatar),
-      (err) => {
-        return res.json({ message: err });
-      }
-    );
+    if (AvatarName[1] !== "avatar.svg") {
+      unlink(
+        path.resolve(__dirname, "..", "..", "tmp", "upload", AvatarName[1]),
+        (err) => {
+          return res.json({ message: err });
+        }
+      );
+    }
   }
 
   const userUpdated = await getRepository(User).update(1, {
     name,
-    avatar: file?.filename ? file?.filename : user.avatar,
+    avatar: file?.filename
+      ? `http://localhost:3333/image/${file?.filename}`
+      : user.avatar,
   });
 
   if (userUpdated.affected === 1) {
