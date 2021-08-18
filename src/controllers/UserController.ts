@@ -5,17 +5,19 @@ import path from "path";
 
 import { User } from "../entities/User";
 
-export const createUser = async () => {
+export const createUser = async (req: Request, res: Response) => {
   const userExist = await getRepository(User).findOne();
 
   if (userExist) {
-    return;
+    return res.send({ user: "O usuário já existe" });
   }
 
-  getRepository(User).save({
+  const user = await getRepository(User).save({
     name: "Pedro Leonardo",
     avatar: "http://localhost:3333/image/avatar.svg",
   });
+
+  res.send(user);
 };
 
 export const getUser = async (req: Request, res: Response) => {
